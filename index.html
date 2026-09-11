@@ -27,8 +27,8 @@
 </script>
 <style>
 :root{
-  --navy:#14213d;--navy-2:#1d2f5a;--ink:#0f172a;--slate:#475569;--line:#e2e8f0;
-  --bg:#ffffff;--bg-2:#f6f7fa;--accent:#e63f1f;--accent-2:#c93315;--gold:#f4b400;
+  --navy:#102132;--navy-2:#1b3349;--ink:#0f172a;--slate:#475569;--line:#e2e8f0;
+  --bg:#ffffff;--bg-2:#f6f7fa;--accent:#a64316;--accent-2:#8a3611;--gold:#e8792f;
   --radius:14px;--max:1160px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -62,7 +62,10 @@ section{padding:80px 0}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 header .wrap{display:flex;align-items:center;justify-content:space-between;height:78px;gap:20px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand img{height:52px;width:auto}
+.logo-crop{--h:62px;height:var(--h);aspect-ratio:1300/516;overflow:hidden;position:relative}
+.logo-crop img{position:absolute;width:calc(var(--h)*1536/516);height:auto;left:calc(var(--h)*-122/516);top:calc(var(--h)*-57/516);max-width:none}
+.badge-crop{--h:200px;height:var(--h);aspect-ratio:530/382;overflow:hidden;position:relative;margin:0 auto}
+.badge-crop img{position:absolute;width:calc(var(--h)*1536/382);height:auto;left:calc(var(--h)*-503/382);top:calc(var(--h)*-604/382);max-width:none}
 .brand .name{font-family:"Barlow Condensed";font-weight:800;font-size:1.5rem;text-transform:uppercase;color:var(--navy);line-height:1}
 .brand .name span{color:var(--accent);display:block;font-size:.85rem;letter-spacing:.2em;font-weight:700}
 nav ul{display:flex;gap:22px;list-style:none;font-weight:500;font-size:.95rem}
@@ -78,13 +81,14 @@ nav a:hover{color:var(--accent)}
   .burger{display:block}
   .phone-lg{display:none}
 }
+@media(max-width:480px){.hdr-cta .btn{padding:11px 16px;font-size:.9rem}.logo-crop{--h:50px}}
 
 /* hero */
 .hero{position:relative;color:#fff;padding:110px 0 100px;overflow:hidden;background:var(--navy)}
 .hero::before{content:"";position:absolute;inset:0;background:
-  radial-gradient(900px 500px at 85% 20%,rgba(230,63,31,.35),transparent 60%),
-  radial-gradient(700px 400px at 10% 90%,rgba(244,180,0,.18),transparent 60%),
-  linear-gradient(180deg,#14213d 0%,#0f1a33 100%)}
+  radial-gradient(900px 500px at 85% 20%,rgba(166,67,22,.45),transparent 60%),
+  radial-gradient(700px 400px at 10% 90%,rgba(232,121,47,.18),transparent 60%),
+  linear-gradient(180deg,#102132 0%,#0a1520 100%)}
 .hero::after{content:"";position:absolute;inset:0;opacity:.14;background-image:
   repeating-linear-gradient(135deg,transparent 0 22px,rgba(255,255,255,.35) 22px 23px),
   repeating-linear-gradient(45deg,transparent 0 22px,rgba(255,255,255,.2) 22px 23px);mask:linear-gradient(90deg,transparent 45%,#000 100%)}
@@ -137,7 +141,7 @@ nav a:hover{color:var(--accent)}
 .about-visual{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--navy);min-height:420px;display:grid;place-items:center;color:#fff}
 .about-visual .big{font-family:"Barlow Condensed";font-weight:800;font-size:8rem;line-height:1;color:var(--gold)}
 .about-visual .cap{text-transform:uppercase;letter-spacing:.2em;font-weight:600;font-size:.95rem;color:#cbd5e1}
-.about-visual::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 26px,rgba(255,255,255,.08) 26px 27px)}
+
 .about-visual>*{position:relative;z-index:1}
 .checks{list-style:none;margin-top:22px;display:grid;gap:12px}
 .checks li{display:flex;gap:12px;align-items:flex-start;color:var(--ink);font-weight:500}
@@ -172,11 +176,11 @@ nav a:hover{color:var(--accent)}
 .chip{padding:10px 16px;border:1px solid var(--line);border-radius:999px;font-weight:500;font-size:.95rem;background:#fff}
 
 /* cta */
-.cta{background:linear-gradient(135deg,var(--accent),#b8290f);color:#fff;text-align:center;padding:70px 0}
+.cta{background:linear-gradient(135deg,#b84d19,var(--accent-2));color:#fff;text-align:center;padding:70px 0}
 .cta h2{color:#fff}
-.cta p{color:#ffe1d9;font-size:1.15rem;margin:12px auto 28px;max-width:560px}
+.cta p{color:#f8dcc9;font-size:1.15rem;margin:12px auto 28px;max-width:560px}
 .cta .btn-white{background:#fff;color:var(--accent-2)}
-.cta .btn-white:hover{background:#fff4f1}
+.cta .btn-white:hover{background:#fdf1e8}
 
 /* contact */
 .contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px}
@@ -190,7 +194,7 @@ nav a:hover{color:var(--accent)}
 @media(max-width:900px){.contact .wrap{grid-template-columns:1fr}}
 
 /* footer */
-footer{background:#0b1226;color:#94a3b8;padding:50px 0 30px;font-size:.9rem}
+footer{background:#0a1520;color:#94a3b8;padding:50px 0 30px;font-size:.9rem}
 footer .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
 footer h4{color:#fff;font-family:"Barlow Condensed";font-size:1.2rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
 footer ul{list-style:none;display:grid;gap:8px}
@@ -208,13 +212,13 @@ footer a:hover{color:#fff}
 <body>
 
 <div class="topbar"><div class="wrap">
-  <div class="left">Family owned &amp; operated · Snowflake, AZ · Serving the White Mountains</div>
+  <div class="left">Family owned &amp; operated · Snowflake, AZ · Est. 2007</div>
   <div><strong>Free estimates</strong> · <a href="tel:+19285364480"><strong>(928) 536-4480</strong></a></div>
 </div></div>
 
 <header><div class="wrap">
   <a class="brand" href="#top" aria-label="Top That Roofing home">
-    <img src="logo.svg" alt="Top That Roofing LLC logo" id="logo">
+    <span class="logo-crop"><img src="image.png" alt="Top That Roofing LLC" id="logo"></span>
   </a>
   <nav id="nav"><ul>
     <li><a href="#services">Services</a></li>
@@ -277,7 +281,7 @@ footer a:hover{color:#fff}
 </div></section>
 
 <div class="stats"><div class="wrap">
-  <div><div class="n">20+</div><div class="l">Years roofing</div></div>
+  <div><div class="n">2007</div><div class="l">Established</div></div>
   <div><div class="n">5.0</div><div class="l">Star rating</div></div>
   <div><div class="n">100%</div><div class="l">Family owned</div></div>
   <div><div class="n">Free</div><div class="l">Estimates</div></div>
@@ -300,17 +304,17 @@ footer a:hover{color:#fff}
 </div></section>
 
 <section class="about" id="about"><div class="wrap">
-  <div class="about-visual"><div style="text-align:center"><div class="big">20+</div><div class="cap">Years on White Mountain roofs</div></div></div>
+  <div class="about-visual" style="background:#fff;border:1px solid var(--line)"><div style="text-align:center"><div class="badge-crop" style="--h:260px"><img src="image.png" alt="Top That Roofing badge"></div><div class="cap" style="color:var(--slate);margin-top:18px">Family owned &amp; operated · Est. 2007</div></div></div>
   <div>
     <span class="eyebrow">About Top That Roofing</span>
     <h2>Family owned. Locally rooted. Roofs done right.</h2>
-    <p style="margin-top:14px">Top That Roofing LLC is a family-owned and operated contracting company based in Snowflake, Arizona, with more than 20 years in roofing and construction. We've spent decades on roofs across the White Mountains, and we know exactly what this climate does to a home.</p>
+    <p style="margin-top:14px">Top That Roofing LLC is a family-owned and operated contracting company based in Snowflake, Arizona, established in 2007, with more than 20 years in roofing and construction. We've spent decades on roofs across the White Mountains, and we know exactly what this climate does to a home.</p>
     <p>Customer satisfaction is our highest priority. That means showing up when we say we will, telling you the truth about what your roof needs, and standing behind the work.</p>
     <ul class="checks">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="#e63f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Free, no-pressure estimates</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="#e63f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Owens Corning member contractor</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="#e63f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Credit cards accepted</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="#e63f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Local crew — we live here too</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="#a64316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Free, no-pressure estimates</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="#a64316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Owens Corning member contractor</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="#a64316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Credit cards accepted</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="#a64316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Local crew — we live here too</li>
     </ul>
     <div style="margin-top:28px"><a class="btn btn-navy" href="#contact">Talk to us</a></div>
   </div>
@@ -400,7 +404,7 @@ footer a:hover{color:#fff}
     <li><a href="#about">About</a></li><li><a href="#process">Process</a></li><li><a href="#reviews">Reviews</a></li><li><a href="#areas">Areas</a></li><li><a href="#contact">Contact</a></li>
   </ul></div>
 </div>
-<div class="copy">© <span id="yr"></span> Top That Roofing LLC · Snowflake, AZ · Family owned &amp; operated</div>
+<div class="copy">© <span id="yr"></span> Top That Roofing LLC · Snowflake, AZ · Family owned &amp; operated since 2007</div>
 </footer>
 
 <a class="mobile-call" href="tel:+19285364480">📞 Call (928) 536-4480 — Free Estimate</a>
