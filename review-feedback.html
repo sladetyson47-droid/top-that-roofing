@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tell Us More | Top That Roofing</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{--navy:#14213d;--accent:#e63f1f;--bg:#f6f7fa}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 16px}
+  .card{max-width:480px;width:100%;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(20,33,61,.12);padding:40px 32px}
+  .logo{display:block;max-width:220px;height:auto;margin:0 auto 24px}
+  h1{font-family:"Barlow Condensed",Arial Narrow,Arial,sans-serif;font-weight:800;font-size:1.6rem;text-align:center;margin:0 0 8px}
+  .sub{color:#475569;font-size:1rem;text-align:center;margin:0 0 28px}
+  label{display:block;font-weight:600;font-size:.9rem;margin:16px 0 6px}
+  input,textarea{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:1rem;font-family:inherit;color:var(--navy)}
+  input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  textarea{min-height:110px;resize:vertical}
+  button{margin-top:24px;width:100%;padding:14px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:1.05rem;font-weight:700;cursor:pointer}
+  button:hover{opacity:.92}
+  .toast{display:none;margin-top:16px;padding:14px;border-radius:10px;background:#f0fdf4;color:#166534;font-weight:600;text-align:center}
+  footer{margin-top:24px;font-size:.8rem;color:#94a3b8;text-align:center}
+  a{color:inherit}
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="logo.svg" alt="Top That Roofing logo">
+    <h1>We strive for 100% satisfaction.</h1>
+    <p class="sub">If we fell short, tell us more so we can make it right.</p>
+
+    <form id="feedbackForm" onsubmit="return sendFeedback(event,this)">
+      <label for="name">Your Name</label>
+      <input id="name" name="name" type="text" placeholder="Full name" required>
+
+      <label for="phone">Phone</label>
+      <input id="phone" name="phone" type="tel" placeholder="Phone" required>
+
+      <label for="feedback">What happened?</label>
+      <textarea id="feedback" name="feedback" placeholder="Tell us what fell short" required></textarea>
+
+      <button type="submit">Send Feedback</button>
+      <div class="toast">Thanks — this opens a text to our team. Hit send and we'll follow up personally.</div>
+    </form>
+
+    <footer>Top That Roofing · Snowflake, AZ · <a href="tel:+19285364480">(928) 536-4480</a></footer>
+  </div>
+
+<script>
+function sendFeedback(e,f){
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(f).entries());
+  const body=Object.entries(d).filter(([k,v])=>v).map(([k,v])=>k+': '+v).join('\n');
+  window.location.href='sms:+19285364480?&body='+encodeURIComponent('Customer feedback (disappointed review)\n')+encodeURIComponent(body);
+  f.querySelector('.toast').style.display='block';
+  return false;
+}
+</script>
+</body>
+</html>
