@@ -37,7 +37,9 @@
   function add(text, who) {
     const d = document.createElement('div');
     d.className = 'tt-m ' + (who === 'user' ? 'tt-u' : 'tt-a');
-    d.textContent = text; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d;
+    const esc = String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    d.innerHTML = esc.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/^[-•] /gm, '• ');
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d;
   }
   let greeted = false;
   function toggle() {
