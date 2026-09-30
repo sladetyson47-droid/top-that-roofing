@@ -1,38 +1,46 @@
-// Webhook for the AI phone answerer (Vapi "tool-calls" server message).
-// Vapi sends: { message: { type: 'tool-calls', toolCallList: [{ id, function: { name, arguments } }] } }
-// Auth: Vapi tool "server.secret" is sent as X-Vapi-Secret; must match VOICE_TOOL_SECRET.
+// Webhook for the AI phone answerer's create_lead tool.
+// Supports ElevenLabs Agents (flat JSON body = tool args) and Vapi ({ message: { toolCallList } }).
+// Auth: header X-Tool-Secret must match VOICE_TOOL_SECRET.
 import { createLead } from '../lib/acculynx.js';
-import { systemPrompt } from '../lib/knowledge.js';
+
+async function save(args) {
+  if (args.caller_id && !/^\{\{/.test(args.caller_id)) {
+    if (!args.phone) args.phone = args.caller_id;
+    args.notes = [args.notes, `Caller ID: ${args.caller_id}`].filter(Boolean).join(' | ');
+  }
+  delete args.caller_id;
+  if (args.address && typeof args.address === 'string') args.address = { street: args.address };
+  if (args.street || args.city || args.zip) {
+    args.address = { street: args.street, city: args.city, state: args.state, zip: args.zip };
+    delete args.street; delete args.city; delete args.state; delete args.zip;
+  }
+  try {
+    const r = await createLead(args, 'phone');
+    return `Saved in AccuLynx (job ${r.jobId}). Tell the caller the owner will call them to set up the free estimate.`;
+  } catch (e) {
+    console.error('LEAD SAVE FAILED', JSON.stringify(args), e.message);
+    return 'Could not save automatically. Tell the caller the owner will call them back shortly.';
+  }
+}
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
-    // Lets the setup script pull the current phone prompt.
-    if (req.query.prompt === '1' && req.headers['x-vapi-secret'] === process.env.VOICE_TOOL_SECRET) {
-      return res.status(200).send(systemPrompt('phone'));
-    }
-    return res.status(200).json({ ok: true });
-  }
-  if (process.env.VOICE_TOOL_SECRET && req.headers['x-vapi-secret'] !== process.env.VOICE_TOOL_SECRET) {
+  if (req.method !== 'POST') return res.status(200).json({ ok: true });
+  const secret = process.env.VOICE_TOOL_SECRET;
+  if (!secret || (req.headers['x-tool-secret'] !== secret && req.headers['x-vapi-secret'] !== secret)) {
     return res.status(401).json({ error: 'unauthorized' });
   }
-  const msg = (req.body && req.body.message) || {};
-  const calls = msg.toolCallList || msg.toolCalls || [];
-  const caller = msg.call?.customer?.number;
-  const results = [];
-  for (const c of calls) {
-    const name = c.function?.name || c.name;
-    let args = c.function?.arguments ?? c.arguments ?? {};
-    if (typeof args === 'string') { try { args = JSON.parse(args); } catch { args = {}; } }
-    if (name !== 'create_lead') { results.push({ toolCallId: c.id, result: 'Unknown tool' }); continue; }
-    if (!args.phone && caller) args.phone = caller;
-    if (caller) args.notes = [args.notes, `Caller ID: ${caller}`].filter(Boolean).join(' | ');
-    try {
-      const r = await createLead(args, 'phone');
-      results.push({ toolCallId: c.id, result: `Saved in AccuLynx (job ${r.jobId}).` });
-    } catch (e) {
-      console.error('LEAD SAVE FAILED', JSON.stringify(args), e.message);
-      results.push({ toolCallId: c.id, result: 'Could not save automatically; tell the caller the owner will call them back shortly.' });
+  const body = req.body || {};
+  const calls = body.message?.toolCallList || body.message?.toolCalls;
+  if (calls) {
+    const results = [];
+    for (const c of calls) {
+      let args = c.function?.arguments ?? c.arguments ?? {};
+      if (typeof args === 'string') { try { args = JSON.parse(args); } catch { args = {}; } }
+      const caller = body.message?.call?.customer?.number;
+      if (caller) args.caller_id = caller;
+      results.push({ toolCallId: c.id, result: await save(args) });
     }
+    return res.status(200).json({ results });
   }
-  res.status(200).json({ results });
+  return res.status(200).json({ result: await save({ ...body }) });
 }
